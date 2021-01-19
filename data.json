@@ -1,0 +1,61 @@
+{
+    "vms": [
+        {
+            "vm_id": "jira-1",
+            "name": "Jira server",
+            "tags": ["JIRA", "work"]
+        },
+        {
+            "vm_id": "jenkins",
+            "name": "Jenkins",
+            "tags": ["Build", "work"]
+        },
+        {
+            "vm_id": "j-1",
+            "name": "jenkins-worker-windows",
+            "tags": ["jenkins", "work"]
+        },
+        {
+            "vm_id": "j-2",
+            "name": "jenkins-worker-linux-1",
+            "tags": ["jenkins", "work"]
+        },
+        {
+            "vm_id": "j-3",
+            "name": "jenkins-worker-linux-2",
+            "tags": ["jenkins", "work"]
+        },
+        {
+            "vm_id": "a-1",
+            "name": "artifactory",
+            "tags": ["artifactory", "work"]
+        },
+        {
+            "vm_id": "d-1",
+            "name": "linux-stage",
+            "tags": ["deployment", "deployment-stage"]
+        },
+        {
+            "vm_id": "d-2",
+            "name": "linux-prod",
+            "tags": ["deployment", "deployment-prod"]
+        }
+    ],
+    "fw_rules": [
+        {
+            "fw_id": "fw-1123",
+            "source_tag": "jenkins",
+            "dest_tag": "artifactory"
+        },
+        {
+            "fw_id": "fw-12333",
+            "source_tag": "work",
+            "dest_tag": "work"
+        },
+        {
+            "fw_id": "fw-12333",
+            "source_tag": "jenkins",
+            "dest_tag": "deployment-stage"
+        }
+    ]
+}
