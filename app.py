@@ -1,6 +1,7 @@
 from flask import Flask, request, abort, jsonify
 from logic import App as LogicApp, Machine, FirewallAllowRule, MultipleChoiceError
 import json
+import sys
 
 app = Flask(__name__)
 logic = LogicApp()
@@ -28,7 +29,8 @@ def stats():
 
 
 if __name__=="__main__":
-    with open("data.json") as f:
+    config_filename = sys.argv[1]
+    with open(config_filename) as f:
         config = json.loads(f.read())
     logic.machines = [ Machine(obj["vm_id"], obj["name"], obj["tags"]) for obj in config["vms"]]
     logic.rules = [FirewallAllowRule(obj["fw_id"], obj["source_tag"], obj["dest_tag"]) for obj in config["fw_rules"]]

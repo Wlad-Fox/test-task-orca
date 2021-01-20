@@ -2,20 +2,17 @@ from unittest import TestCase
 from logic import App, Machine, FirewallAllowRule, MultipleChoiceError
 
 
-def create_machine(*, id=None, name=None, tags=None):
-    m = Machine(name or "unnamed", tags or [])
-    if id:
-        m.id = id
-    return m
+def create_machine(id, name=None, tags=None):
+    return Machine(id, name or "unnamed", tags or [])
 
 
 class AppGetMachineTest(TestCase):
     def setUp(self):
         self.app = App()
         self.app.machines = [
-            create_machine(id='a1b2c3d4', name="test with d4"),
-            create_machine(id='a1b2c3xx', name="test with x"),
-            create_machine(id='a8888888', name="eights"),
+            create_machine('a1b2c3d4', "test with d4"),
+            create_machine('a1b2c3xx', "test with x"),
+            create_machine('a8888888', "eights"),
         ]
 
     def tearDown(self):
@@ -62,23 +59,23 @@ class AppGetAttackVectorsTest(TestCase):
     def setUp(self):
         self.app = App()
         self.app.machines = [
-            create_machine(id='1000', tags=["id_1000", "group_1"]),
-            create_machine(id='1002', tags=["id_1002", "group_1"]),
-            create_machine(id='1003', tags=["id_1003", "group_1"]),
-            create_machine(id='1100', tags=["id_1100", "group_2"]),
-            create_machine(id='1200', tags=["id_1200", "group_3"]),
-            create_machine(id='1510', tags=["id_1510", "group_4"]),
-            create_machine(id='1520', tags=[]),
+            create_machine('1000', tags=["id_1000", "group_1"]),
+            create_machine('1002', tags=["id_1002", "group_1"]),
+            create_machine('1003', tags=["id_1003", "group_1"]),
+            create_machine('1100', tags=["id_1100", "group_2"]),
+            create_machine('1200', tags=["id_1200", "group_3"]),
+            create_machine('1510', tags=["id_1510", "group_4"]),
+            create_machine('1520', tags=[]),
         ]
         self.app.rules = [ 
-            FirewallAllowRule("group_1", "group_1"),
-            FirewallAllowRule("group_2", "group_1"),
-            FirewallAllowRule("group_3", "group_1"),
-            FirewallAllowRule("group_3", "group_2"),
-            FirewallAllowRule("group_4", "group_1"),
-            FirewallAllowRule("group_4", "group_2"),
-            FirewallAllowRule("group_4", "group_3"),
-            FirewallAllowRule("id_1000", "id_1200"),
+            FirewallAllowRule("fw-1", "group_1", "group_1"),
+            FirewallAllowRule("fw-2", "group_2", "group_1"),
+            FirewallAllowRule("fw-3", "group_3", "group_1"),
+            FirewallAllowRule("fw-4", "group_3", "group_2"),
+            FirewallAllowRule("fw-5", "group_4", "group_1"),
+            FirewallAllowRule("fw-6", "group_4", "group_2"),
+            FirewallAllowRule("fw-7", "group_4", "group_3"),
+            FirewallAllowRule("fw-8", "id_1000", "id_1200"),
         ]
 
     def tearDown(self):

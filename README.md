@@ -6,7 +6,11 @@
 * (optionally) create and activate python virtual environment
 * install packages ```pip3 install -r requirements.txt```
 * update data.json file with your data
-* run a dev server ```run python3 app.py```
+* run a dev server and pass name of json file ```python3 app.py data.json```
+
+## Running tests
+
+```python3 -m unittest```
 
 ## About
 
