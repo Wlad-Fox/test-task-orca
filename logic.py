@@ -1,3 +1,5 @@
+from functools import wraps
+from time import perf_counter
 
 
 class FirewallAllowRule:
@@ -18,10 +20,27 @@ class MultipleChoiceError(BaseException):
     pass 
 
 
+def _log_time(fn):
+    @wraps(fn)
+    def wrapped(self, *args, **kwargs):
+        start_s = perf_counter()
+        try:
+            return fn(self, *args, **kwargs)
+        finally:
+            time_s = perf_counter() - start_s
+            self._average_request_time_s = \
+                ((self._average_request_time_s * self._requests_count + time_s) /
+                (self._requests_count + 1))
+            self._requests_count += 1  
+    return wrapped
+
+
 class App():
     def __init__(self):
         self.machines = []
         self.rules = []
+        self._requests_count = 0
+        self._average_request_time_s = 0
 
     def _get_machine_by_id(self, machine_id: str) -> Machine:
         assert(machine_id)
@@ -32,7 +51,7 @@ class App():
             raise MultipleChoiceError(matching_machines)
         return matching_machines[0]
 
-
+    @_log_time
     def get_attack_vectors(self, machine_id): 
         victim = self._get_machine_by_id(machine_id)
 
@@ -50,10 +69,11 @@ class App():
 
         return attacker_ids
 
+    @_log_time
     def stats(self):
         return {
-            "vm_count":len(self.machines),
-            "request_count":1120232,
-            "average_request_time":0.003032268166772597
+            "vm_count": len(self.machines),
+            "request_count": self._requests_count,
+            "average_request_time": self._average_request_time_s * 1000,
         }
         

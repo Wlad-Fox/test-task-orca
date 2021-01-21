@@ -8,16 +8,12 @@ logic = LogicApp()
 
 @app.route('/attack/')
 def attack():
-    print(logic)
     machine_id = request.args.get('vm_id', '')
-    print(1)
     if not machine_id:
-        print(2)
         abort(400)
     try:
         return jsonify(logic.get_attack_vectors(machine_id))
     except KeyError:
-        print(1)
         abort(404)
     except MultipleChoiceError:
         abort(400)
